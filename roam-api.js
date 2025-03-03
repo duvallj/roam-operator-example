@@ -17,8 +17,8 @@
  * @returns {Promise<Knock>} The created knock
  */
 const createKnock = async (apiKey, email, name, instructions) => {
-  return await makeRequest(apiKey, "bot.knock.create", {
-    email,
+  return await makeRequest(apiKey, "POST", "bot.knock.create", {
+    target: email,
     name,
     instructions,
   });
@@ -32,23 +32,34 @@ const createKnock = async (apiKey, email, name, instructions) => {
  * @returns {Promise<Knock>} The specified knock
  */
 const checkKnock = async (apiKey, knockId) => {
-  return await makeRequest(apiKey, "bot.knock.info", { id: knockId });
+  return await makeRequest(apiKey, "GET", "bot.knock.info", { id: knockId });
 };
 
-const baseUrl = new URL("https://api.roam.dev/v0/");
-
-const makeRequest = async (apiKey, path, body) => {
-  const response = await fetch(new URL(path, baseUrl), {
-    body: JSON.stringify(body),
+/**
+ * Makes an arbitrary request to the Roam API.
+ */
+const makeRequest = async (apiKey, method, path, body) => {
+  let url = new URL(path, ROAM_BASE_URL).toString();
+  if (method === "GET") {
+    url = `${url}?${new URLSearchParams(body)}`;
+  }
+  const response = await fetch(url, {
+    body: method === "POST" ? JSON.stringify(body) : undefined,
     headers: {
       Authorization: `Bearer ${apiKey}`,
       "Content-Type": "application/json",
       Accept: "application/json",
     },
-    method: "POST",
+    method,
   });
   if (!response.ok) {
     throw new Error(response.statusText);
   }
   return await response.json();
 };
+
+/**
+ * NOTE: you _must_ specify baseUrl somewhere. If this code runs on a server,
+ * you should uncomment the following line:
+ */
+// const ROAM_BASE_URL = new URL("https://api.ro.am/v0/");
