@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="x-ua-compatible" content="ie-edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Roam Operator API Demo</title>
+    <style>
+      body {
+        margin: 16px;
+      }
+
+      form,
+      div {
+        display: flex;
+        flex-direction: column;
+        padding: 16px;
+        gap: 16px;
+      }
+
+      form {
+        align-items: flex-start;
+      }
+
+      div {
+        border: dashed 2px gray;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Roam Operator API Demo</h1>
+    <p>
+      Please see the Getting Started instructions at
+      <a href="https://developer.ro.am/docs/operator/operator-api-alpha"
+        >the Operator API (Alpha) Documentation</a
+      >.
+    </p>
+    <form>
+      <label>API Key: <input id="apikey" type="text" required /></label>
+      <div>
+        <label>Email: <input id="email" type="email" /></label>
+        <label>Name: <input id="name" type="text" /></label>
+        <label>Instructions: <textarea id="instructions"></textarea></label>
+        <button id="send" type="submit">Send Knock</button>
+      </div>
+      <div>
+        <label>Knock ID: <input id="knockid" type="text" /></label>
+        <button id="check" type="submit">Check Knock Result</button>
+      </div>
+      <div>
+        <pre id="knockresult">Knock result will go here</pre>
+      </div>
+    </form>
+    <script src="roam-api.js"></script>
+    <!-- Change the following to "client-talks-to-server.js" if you're running a server -->
+    <script src="client-sends-requests.js"></script>
+  </body>
+</html>
