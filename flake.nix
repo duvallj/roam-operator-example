@@ -1,3 +1,5 @@
+# This file is used to provide a development environment with Caddy installed
+# for Nix users. If you don't know what Nix is, don't worry about it.
 {
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11";
@@ -18,7 +20,6 @@
         };
       in
       {
-        # Just a simple development environment providing `caddy`, which is needed to run the reverse proxy + file server in one
         devShells.default = pkgs.mkShell {
           packages = with pkgs; [
             caddy

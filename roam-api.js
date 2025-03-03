@@ -59,7 +59,6 @@ const makeRequest = async (apiKey, method, path, body) => {
 };
 
 /**
- * NOTE: you _must_ specify baseUrl somewhere. If this code runs on a server,
- * you should uncomment the following line:
+ * NOTE: If this code runs on a server, you should uncomment the following:
  */
 // const ROAM_BASE_URL = new URL("https://api.ro.am/v0/");
