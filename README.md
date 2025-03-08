@@ -15,7 +15,7 @@ Any version of Python 3.10 or newer should work with this example. Navigate to
 the repository root and run:
 
 ```
-python3 simple_server.py
+python3 standalone_server.py
 ```
 
 You should see the text "serving on <http://localhost:2015/>". Clicking on that
@@ -39,5 +39,29 @@ into your terminal. You should then be able to access the example at
 
 Please refer to the [Quickstart Guide][1] and the source code inside this
 repository for more details.
+
+## Webhooks
+
+If you don't want to poll the Roam API, see the
+[`knock.ready`](https://developer.ro.am/docs/operator/knock-ready) event for
+knowing when a given knock ID is ready.
+
+Webhooks require a server accessible from the open internet. It can be run
+locally with [ngrok](https://ngrok.com/), or on a Director flask image. Either
+way, please install all the dependencies with:
+
+```
+pip install flask[async]
+```
+
+And to run the server, run
+
+```
+flask --app server run
+```
+
+In the Roam Administration > Developer page where you set up your API key,
+add the webhook URL `https://<your hostname}/webhook`, and switch on the event
+"job:ready".
 
 [1]: https://developer.ro.am/docs/operator/operator-api-alpha#quick-start

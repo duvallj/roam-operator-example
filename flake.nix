@@ -28,6 +28,9 @@
             python312
             # For automatic formatting
             python312Packages.autopep8
+            # For the full server
+            python312Packages.flask
+            python312Packages.flask.optional-dependencies.async
           ];
         };
       }

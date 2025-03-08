@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en-US">
   <head>
     <meta charset="utf-8" />
@@ -70,6 +70,14 @@
       const knockId = document.querySelector("#knockid");
       const knockResult = document.querySelector("#knockresult");
 
+      // Save/restore all values on page refresh, for convenience.
+      [apiKey, email, botName, instructions, knockId].forEach((element) => {
+        element.addEventListener("change", (event) => {
+          localStorage.setItem(element.id, event.target.value);
+        });
+        element.value = localStorage.getItem(element.id);
+      });
+
       /**
        * @param {Knock} - The knock to display on the page
        */
@@ -99,7 +107,7 @@
                 apiKey.value,
                 email.value,
                 botName.value,
-                instructions.value,
+                instructions.value
               );
               displayKnock(response);
             }
@@ -113,13 +121,19 @@
         }
       });
 
-      // Save/restore all values on page refresh, for convenience.
-      [apiKey, email, botName, instructions, knockId].forEach((element) => {
-        element.addEventListener("change", (event) => {
-          localStorage.setItem(element.id, event.target.value);
-        });
-        element.value = localStorage.getItem(element.id);
-      });
+      (async () => {
+        while (true) {
+          // Mimics a websocket by just polling an endpoint that will only return once the knock comes in.
+          const response = await fetch("/next-event");
+          if (!response.ok) throw new Error(`${response.statusText}`);
+          const event = await response.json();
+          console.log("got response", event);
+          // TODO: should be "knock.ready" but the API doesn't send that?
+          if (event.type === "job.done") {
+            displayKnock(await checkKnock(apiKey.value, event.id));
+          }
+        }
+      })();
     </script>
   </body>
 </html>
